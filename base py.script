@@ -1,0 +1,38 @@
+import sys
+import subprocess
+
+# usage: python <script_name.py> <path.to.list/file> <output/dir>
+# this is just an arbitrary usage, but note that should your no. of inputs change, you will need to adjust things later in the script.
+
+if len (sys.argv) <4:
+    sys.exit("Incorrect usage, n/"
+            "usage: python <script_name.py> <path.to.list/file> <output.dir/>")
+
+list = sys.argv[1]
+outdir = sys.argv[2]
+
+# tracker is optional, but provides utility later if for example, you want to number the output files without a specified input
+tracker = 0
+
+for entry in open(list):
+    tracker += 1 # adding 1 to the current tracker score
+    
+    # here you should generate the command line entry for the program you're invoking later for qsub.
+    
+    # For example, let's look at the program fastx_quality_filter (already loaded in the genomics bin on icerberg).
+    # You can bring up the usage for yourself by simply typing:
+    # $ fastx_quality_filter -h (assuming you've implemented the bash.profile script, otherwise you have to path everytime)
+    # Here I'm only interested in some of fastx_quality_filter's functions, specifically:
+    # fastx_quality_filter [-v] [-q N ~min q score] [-i <input.file.] [-o <output.file.name>]
+    # There's also a -Q33 hidden option that I'll need, since this is the Phred quality score used in my data.
+    
+    qf = ("fastq_quality_filter "
+          "-v -q 20 "
+          "-i " + entry + " "
+          "-o " + entry.replace("fastq","trimmed.fastq) " "
+          "-Q33"
+    
+    # From here we need to generate a qsub script
+    qsub = ("#!/bin/bash \n"
+            + qf)
+            
