@@ -5,7 +5,7 @@ import subprocess
 # this is just an arbitrary usage, but note that should your no. of inputs change, you will need to adjust things later in the script.
 
 if len (sys.argv) <4:
-    sys.exit("Incorrect usage, n/"
+    sys.exit("Incorrect usage, \n"
             "usage: python <script_name.py> <path.to.list/file> <output.dir/>")
 
 list = sys.argv[1]
@@ -29,10 +29,21 @@ for entry in open(list):
     qf = ("fastq_quality_filter "
           "-v -q 20 "
           "-i " + entry + " "
-          "-o " + entry.replace("fastq","trimmed.fastq) " "
+          "-o " + entry.replace("fastq","trimmed.fastq") + " "
           "-Q33"
+    print qf, tracker
     
     # From here we need to generate a qsub script
-    qsub = ("#!/bin/bash \n"
-            + qf)
-            
+    #qsub = ("#!/bin/bash \n"
+    #        + qf)
+    # I don't need to specify memory requirements in this instance
+    
+    # Then write the qsub shell script
+    #qsub_name = outdir + 'qf_job_' + str(tracker) + '.sh', 'w'
+    
+    #qsub_file = open(qsub_name)
+    #qsub_file.write(qsub)
+    #qsub_file.close()
+    
+    # and submit each entry to the bergy shortque
+    # subprocess.call('qsub ' + qsub_name, shell = T)
