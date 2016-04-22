@@ -30,7 +30,7 @@ for entry in open(list):
           "-v -q 20 "
           "-i " + entry + " "
           "-o " + entry.replace("fastq","trimmed.fastq") + " "
-          "-Q33"
+          "-Q33")
     print qf, tracker
     
     # From here we need to generate a qsub script
